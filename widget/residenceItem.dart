@@ -1,4 +1,5 @@
 import 'package:Mas/providers/models/GrandResidence.dart';
+import 'package:Mas/providers/models/localResidence.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../shared/customColor.dart';
@@ -6,16 +7,18 @@ import 'package:flutter/material.dart';
 
 class ResidenceItem extends StatelessWidget {
   Residence residence;
+  LocalResidence localResidence;
+  double height;
 
-  ResidenceItem({this.residence});
+  ResidenceItem({this.residence,this.localResidence,this.height});
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.only(right: 8,left: 8,bottom: 10),
       child: Card(
         elevation: 4,
         child: Container(
-          height: MediaQuery.of(context).size.height / 2.3,
+          //height: height / 2,
           width: MediaQuery.of(context).size.width,
           color: Colors.white,
           child: Column(
@@ -31,7 +34,7 @@ class ResidenceItem extends StatelessWidget {
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height / 4,
+                      height: height / 4,
                       child: FadeInImage.assetNetwork(
                         fadeInCurve: Curves.bounceInOut,
                         fadeInDuration: Duration(seconds: 3),
@@ -47,8 +50,9 @@ class ResidenceItem extends StatelessWidget {
                     bottom: -20,
                     child: GestureDetector(
                       onTap: () {
+                        print(residence.position);
                         Navigator.pushNamed(context, 'map',
-                            arguments: residence.emplacement);
+                            arguments: localResidence);
                       },
                       child: Container(
                         alignment: Alignment.centerLeft,
@@ -75,7 +79,7 @@ class ResidenceItem extends StatelessWidget {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(left: 20, top: 20),
+                padding: EdgeInsets.only(left: 20, top: 25),
                 child: Text(residence.nom,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -105,7 +109,7 @@ class ResidenceItem extends StatelessWidget {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(left: 20, top: 10),
+                padding: EdgeInsets.only(left: 20, top: 10,bottom: 12),
                 child: Row(
                   children: <Widget>[
                     Icon(

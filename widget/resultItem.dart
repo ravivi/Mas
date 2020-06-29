@@ -1,8 +1,10 @@
 import 'package:Mas/providers/models/AllModel.dart';
 import 'package:Mas/providers/service/ChambreService.dart';
+import 'package:Mas/screens/listTest.dart';
+import 'package:Mas/screens/photoViewEx.dart';
 import 'package:provider/provider.dart';
 import '../shared/customColor.dart';
-import 'package:carousel_pro/carousel_pro.dart';
+// import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 
 class ResultItem extends StatefulWidget {
@@ -16,37 +18,65 @@ class ResultItem extends StatefulWidget {
 
 class _ResultItemState extends State<ResultItem> {
   bool isExpended = false;
- 
 
   @override
   Widget build(BuildContext context) {
     Chambres chambre = widget.chambre;
- List<NetworkImage> myImages = chambre.images.map((e) => NetworkImage(e.image)).toList();
+  
     return Column(
       children: <Widget>[
-        Container(
-          //Caroussel
-          height: 200,
-          alignment: Alignment.center,
+        // Container(
+        //   //Caroussel
+        //   height: 200,
+        //   alignment: Alignment.center,
 
-          child: Carousel(
-            images: myImages,
-            animationCurve: Curves.decelerate,
-            autoplay: false,
-            autoplayDuration: const Duration(seconds: 4),
-            animationDuration: const Duration(milliseconds: 3),
-            dotPosition: DotPosition.bottomCenter,
-            dotIncreasedColor: CustomColors.skyBlue,
-            dotColor: Colors.white,
-            dotVerticalPadding: 10.0,
-            dotSize: 6.0,
-            dotSpacing: 20.0,
-            indicatorBgPadding: 5.0,
-            dotBgColor: Colors.transparent,
-            borderRadius: false,
+        //   child: Carousel(
+        //     images: myImages,
+        //     animationCurve: Curves.decelerate,
+        //     autoplay: false,
+        //     autoplayDuration: const Duration(seconds: 4),
+        //     animationDuration: const Duration(milliseconds: 3),
+        //     dotPosition: DotPosition.bottomCenter,
+        //     dotIncreasedColor: CustomColors.skyBlue,
+        //     dotColor: Colors.white,
+        //     dotVerticalPadding: 10.0,
+        //     dotSize: 6.0,
+        //     dotSpacing: 20.0,
+        //     indicatorBgPadding: 5.0,
+        //     dotBgColor: Colors.transparent,
+        //     borderRadius: false,
+        //   ),
+        // ),
+
+        Container(
+          height: 170,
+          width: MediaQuery.of(context).size.width,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: chambre.images.length,
+            itemBuilder: (context, i) {
+              print(chambre.images[i].image);
+              return Container(
+                width: MediaQuery.of(context).size.width - 100,
+                margin: EdgeInsets.symmetric(horizontal:10),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  // child: FadeInImage.assetNetwork(
+                  //   fadeInCurve: Curves.bounceInOut,
+                  //   fadeInDuration: Duration(seconds: 3),
+                  //   placeholder: 'images/maison.jpg',
+                  //   width: 50,
+                  //   image: "${chambre.images[i].image}",
+                  //   fit: BoxFit.cover,
+                  // ),
+                  child: HeroExample(id: chambre.images[i].id,image: chambre.images[i].image,),
+                ),
+                // child: Image.network(chambre.images[i].image),
+              );
+            },
           ),
         ),
-        
+
         SizedBox(
           height: 5,
         ),
@@ -167,16 +197,8 @@ class _ResultItemState extends State<ResultItem> {
                         SizedBox(
                           height: 20,
                         ),
-                        Text("""
- Chambre de luxe et élégante salle de bains avec une douche emotional
- Air Conditionée
- Sèche-Cheveuxi
- Connexion internet avec ADSL
- Salle de bain avec douche
- Dispositif pour l'auto-échauffement et l'air conditionné
- Frigobar
- Ligne de téléphone directe
- Tv Satellitaire""",
+                        Text(chambre.description,
+                        textAlign: TextAlign.justify,
                             style: TextStyle(
                               color: CustomColors.grey,
                               fontSize: 13,

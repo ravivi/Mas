@@ -25,7 +25,7 @@ class ChambreService with ChangeNotifier {
     this.chambre = chambre;
   }
 
-  Future<ReservationModel> setReservation({String email, String nom, String prenom,String numero})  async{
+  Future<int> setReservation({String email, String nom, String prenom,String numero})  async{
     final res = await http.post('$url/reservations', headers: {"Accept": "application/json", 'Content-Type': 'application/json'}, body: jsonEncode({
   "email": email,
   "nom": nom,
@@ -36,10 +36,20 @@ class ChambreService with ChangeNotifier {
   "chambre": "/api/chambres/${chambre.id}"
 }));
 
-  print(res.body);
-    final body = jsonDecode(res.body);
+if(res.statusCode == 201){
+print(res.body);
+    final Map<String,dynamic> body = jsonDecode(res.body);
 
-    return ReservationModel.fromJson(body);
+    return body["id"] as int;
+}
+else if (res.statusCode == 404){
+  return -1;
+}
+else{
+  return 0;
+}
+  
+    //print(body);
   }
 
   Future<List<Chambres>> fetchAvailable() async {
